@@ -7,6 +7,7 @@ import org.springframework.shell.command.annotation.Option;
 
 import dev.renankrz.library.model.Book;
 import dev.renankrz.library.services.BookService;
+import dev.renankrz.library.view.BookFormatter;
 
 @Command(command = "b", group = "Book Commands")
 class BookCommands {
@@ -20,25 +21,13 @@ class BookCommands {
     @Command(command = "all")
     public String all() {
         List<Book> results = service.findAll();
-        return String.join("\n", results.stream()
-                .map(b -> String.join(" | ",
-                        List.of(
-                                b.getName(),
-                                String.join(", ", b.getAuthors().stream().map(a -> a.getName()).toList()),
-                                String.join(", ", b.getTags().stream().map(t -> t.getName()).toList()))))
-                .toList());
+        return BookFormatter.formatList(results);
     }
 
     @Command(command = "search")
     public String search(@Option(longNames = "name", shortNames = 'n') String name) {
         List<Book> results = service.findByName(name);
-        return String.join("\n", results.stream()
-                .map(b -> String.join(" | ",
-                        List.of(
-                                b.getName(),
-                                String.join(", ", b.getAuthors().stream().map(a -> a.getName()).toList()),
-                                String.join(", ", b.getTags().stream().map(t -> t.getName()).toList()))))
-                .toList());
+        return BookFormatter.formatList(results);
     }
 
 }
