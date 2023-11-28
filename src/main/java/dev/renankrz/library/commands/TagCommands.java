@@ -8,7 +8,7 @@ import org.springframework.shell.command.annotation.Option;
 import dev.renankrz.library.model.Tag;
 import dev.renankrz.library.services.TagService;
 
-@Command(command = "t")
+@Command(command = "t", group = "Tag Commands")
 class TagCommands {
 
     private final TagService service;

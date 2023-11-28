@@ -8,7 +8,7 @@ import org.springframework.shell.command.annotation.Option;
 import dev.renankrz.library.model.Book;
 import dev.renankrz.library.services.BookService;
 
-@Command(command = "b")
+@Command(command = "b", group = "Book Commands")
 class BookCommands {
 
     private final BookService service;
@@ -18,10 +18,14 @@ class BookCommands {
     }
 
     @Command(command = "all")
-    public String getAll() {
+    public String all() {
         List<Book> results = service.findAll();
         return String.join("\n", results.stream()
-                .map(a -> a.getName())
+                .map(b -> String.join(" | ",
+                        List.of(
+                                b.getName(),
+                                String.join(", ", b.getAuthors().stream().map(a -> a.getName()).toList()),
+                                String.join(", ", b.getTags().stream().map(t -> t.getName()).toList()))))
                 .toList());
     }
 
@@ -29,7 +33,12 @@ class BookCommands {
     public String search(@Option(longNames = "name", shortNames = 'n') String name) {
         List<Book> results = service.findByName(name);
         return String.join("\n", results.stream()
-                .map(a -> a.getName())
+                .map(b -> String.join(" | ",
+                        List.of(
+                                b.getName(),
+                                String.join(", ", b.getAuthors().stream().map(a -> a.getName()).toList()),
+                                String.join(", ", b.getTags().stream().map(t -> t.getName()).toList()))))
                 .toList());
     }
+
 }

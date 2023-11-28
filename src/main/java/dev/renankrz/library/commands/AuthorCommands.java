@@ -8,7 +8,7 @@ import org.springframework.shell.command.annotation.Option;
 import dev.renankrz.library.model.Author;
 import dev.renankrz.library.services.AuthorService;
 
-@Command(command = "a")
+@Command(command = "a", group = "Author Commands")
 class AuthorCommands {
 
     private final AuthorService service;
