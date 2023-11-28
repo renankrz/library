@@ -1,11 +1,15 @@
 package dev.renankrz.library.model;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -19,20 +23,24 @@ public class Book {
 
     @NotBlank
     @Max(255)
-    private final String name;
+    private String name;
 
-    private final Integer year;
+    private Integer year;
 
-    private final Integer edition;
+    private Integer edition;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
-    Book() {
-        this(null, null, null);
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "book_tag", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
+
+    public Book() {
     }
 
-    Book(String name, Integer year, Integer edition) {
+    public Book(String name, Integer year, Integer edition) {
         this.name = name;
         this.year = year;
         this.edition = edition;
@@ -46,16 +54,40 @@ public class Book {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getYear() {
         return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public Integer getEdition() {
         return edition;
     }
 
+    public void setEdition(Integer edition) {
+        this.edition = edition;
+    }
+
     public Set<Author> getAuthors() {
-        return authors;
+        return Collections.unmodifiableSet(authors);
+    }
+
+    public void addAuthor(Author author) {
+        authors.add(author);
+    }
+
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(tags);
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
     }
 
 }

@@ -1,5 +1,6 @@
 package dev.renankrz.library.model;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class Author {
     @Max(255)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 
     Author() {
@@ -44,7 +45,11 @@ public class Author {
     }
 
     public Set<Book> getBooks() {
-        return books;
+        return Collections.unmodifiableSet(books);
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
     }
 
 }
