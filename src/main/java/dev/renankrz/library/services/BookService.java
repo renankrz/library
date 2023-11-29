@@ -20,8 +20,12 @@ public class BookService {
         return repo.findAll();
     }
 
-    public List<Book> findByName(String name) {
-        return repo.findByNameContainsIgnoreCase(name);
+    public List<Book> findByName(String term) {
+        return repo.findByNameContainsIgnoreCase(term);
+    }
+
+    public List<Book> findByAuthor(String term) {
+        return repo.findByAuthor(term);
     }
 
 }
