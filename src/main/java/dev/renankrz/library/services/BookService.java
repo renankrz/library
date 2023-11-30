@@ -32,4 +32,8 @@ public class BookService {
         return repo.findByTag(term);
     }
 
+    public void save(Book b) {
+        repo.save(b);
+    }
+
 }
