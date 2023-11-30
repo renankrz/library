@@ -4,22 +4,23 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import dev.renankrz.library.Constants;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Author {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;
 
     @NotBlank
-    @Max(255)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "authors")
@@ -28,7 +29,7 @@ public class Author {
     Author() {
     }
 
-    Author(String name) {
+    public Author(String name) {
         this.name = name;
     }
 

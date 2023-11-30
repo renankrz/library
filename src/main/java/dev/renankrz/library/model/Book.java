@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import dev.renankrz.library.Constants;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,20 +14,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Book {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;
 
     @NotBlank
-    @Max(255)
+    @Column(nullable = false)
     private String name;
 
+    @NotNull
+    @Column(nullable = false)
     private Integer year;
 
     private Integer edition;
@@ -38,7 +42,7 @@ public class Book {
     @JoinTable(name = "book_tag", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
 
-    public Book() {
+    Book() {
     }
 
     public Book(String name, Integer year, Integer edition) {
