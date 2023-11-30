@@ -28,4 +28,8 @@ public class BookService {
         return repo.findByAuthor(term);
     }
 
+    public List<Book> findByTag(String term) {
+        return repo.findByTag(term);
+    }
+
 }

@@ -21,7 +21,8 @@ class LibraryCommands {
     @Command(command = "find", description = "Find books.")
     public String find(
             @Option(shortNames = 'n') String name,
-            @Option(shortNames = 'a') String author) {
+            @Option(shortNames = 'a') String author,
+            @Option(shortNames = 't') String tag) {
 
         List<Book> results;
 
@@ -29,6 +30,8 @@ class LibraryCommands {
             results = service.findByName(name);
         } else if (author != null) {
             results = service.findByAuthor(author);
+        } else if (tag != null) {
+            results = service.findByTag(tag);
         } else {
             results = service.findAll();
         }
