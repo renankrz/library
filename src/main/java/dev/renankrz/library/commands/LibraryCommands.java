@@ -86,4 +86,12 @@ class LibraryCommands {
         return BookFormatter.formatList(results);
     }
 
+    @Command(command = "rm", description = "Remove books.")
+    public String remove(
+            @Option(shortNames = 'i', required = true) String id) {
+        bookService.delete(Long.parseLong(id));
+
+        return "Book removed.";
+    }
+
 }
