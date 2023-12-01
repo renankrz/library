@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 public class CustomPromptProvider implements PromptProvider {
 
     public AttributedString getPrompt() {
-        return new AttributedString("library:> ",
+        return new AttributedString(
+                "library:> ",
                 AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE));
     }
 
