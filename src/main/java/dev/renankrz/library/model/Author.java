@@ -41,6 +41,12 @@ public class Author {
         return this.name;
     }
 
+    public String getLastName() {
+        String[] names = this.name.split(" ");
+        return names[names.length - 1];
+
+    }
+
     public void setName(String name) {
         this.name = name;
     }
