@@ -24,4 +24,8 @@ public class AuthorService {
         return repo.findByNameContainsIgnoreCase(name);
     }
 
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
+
 }

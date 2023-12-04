@@ -41,7 +41,7 @@ public class BookService {
         repo.save(b);
     }
 
-    public void delete(long id) {
+    public void delete(Long id) {
         repo.deleteById(id);
     }
 
