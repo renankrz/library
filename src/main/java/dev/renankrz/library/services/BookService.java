@@ -1,6 +1,7 @@
 package dev.renankrz.library.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,10 @@ public class BookService {
 
     public List<Book> findByTag(String term) {
         return repo.findByTag(term);
+    }
+
+    public Optional<Book> findById(Long id) {
+        return repo.findById(id);
     }
 
     public void save(Book b) {

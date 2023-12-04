@@ -1,6 +1,7 @@
 package dev.renankrz.library.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,10 @@ public class TagService {
 
     public List<Tag> findByName(String name) {
         return repo.findByNameContainsIgnoreCase(name);
+    }
+
+    public Optional<Tag> findById(Long id) {
+        return repo.findById(id);
     }
 
     public void delete(Long id) {
