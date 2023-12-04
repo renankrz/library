@@ -2,6 +2,7 @@ package dev.renankrz.library.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import dev.renankrz.library.model.Book;
@@ -18,6 +19,10 @@ public class BookService {
 
     public List<Book> findAll() {
         return repo.findAll();
+    }
+
+    public List<Book> findAllByExample(Example<Book> example) {
+        return repo.findAll(example);
     }
 
     public List<Book> findByName(String term) {

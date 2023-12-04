@@ -1,7 +1,13 @@
 package dev.renankrz.library.commands;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 
@@ -68,22 +74,51 @@ class LibraryCommands {
     @Command(command = "find", description = "Find books.")
     public String find(
             @Option(shortNames = 'n') String name,
-            @Option(shortNames = 'a') String author,
-            @Option(shortNames = 't') String tag) {
+            @Option(shortNames = 'y') String year,
+            @Option(shortNames = 'e') String edition,
+            @Option(shortNames = 'a') String authors,
+            @Option(shortNames = 't') String tags) {
 
-        List<Book> results;
+        Book probe = new Book(
+                name,
+                year != null ? Integer.parseInt(year) : null,
+                edition != null ? Integer.parseInt(edition) : null);
 
-        if (name != null) {
-            results = bookService.findByName(name);
-        } else if (author != null) {
-            results = bookService.findByAuthor(author);
-        } else if (tag != null) {
-            results = bookService.findByTag(tag);
-        } else {
-            results = bookService.findAll();
+        Example<Book> example = Example.of(probe,
+                ExampleMatcher.matchingAll().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING));
+        List<Book> results = bookService.findAllByExample(example);
+
+        if (authors == null && tags == null) {
+            return BookFormatter.formatList(results);
         }
 
-        return BookFormatter.formatList(results);
+        List<Book> resultsFilteredByAuthor = new ArrayList<>(results);
+
+        if (authors != null) {
+            Set<String> inputAuthorsNames = List.of(authors.split(",")).stream().collect(Collectors.toSet());
+
+            for (Book r : results) {
+                if (!r.getAuthors().stream().map(a -> a.getName()).collect(Collectors.toSet())
+                        .containsAll(inputAuthorsNames)) {
+                    resultsFilteredByAuthor.remove(r);
+                }
+            }
+        }
+
+        List<Book> resultsFilteredByTag = new ArrayList<>(resultsFilteredByAuthor);
+
+        if (tags != null) {
+            Set<String> inputTagsNames = List.of(tags.split(",")).stream().collect(Collectors.toSet());
+
+            for (Book r : resultsFilteredByAuthor) {
+                if (!r.getTags().stream().map(t -> t.getName()).collect(Collectors.toSet())
+                        .containsAll(inputTagsNames)) {
+                    resultsFilteredByTag.remove(r);
+                }
+            }
+        }
+
+        return BookFormatter.formatList(resultsFilteredByTag);
     }
 
     @Command(command = "rm", description = "Remove books.")
