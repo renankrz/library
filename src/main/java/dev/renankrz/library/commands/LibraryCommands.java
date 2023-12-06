@@ -74,8 +74,8 @@ class LibraryCommands {
         return "Book added.";
     }
 
-    @Command(command = "find", description = "Find books.")
-    public String find(
+    @Command(command = "books", description = "Show books.")
+    public String books(
             @Option(shortNames = 'n') String name,
             @Option(shortNames = 'y') String year,
             @Option(shortNames = 'e') String edition,
