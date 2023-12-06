@@ -29,7 +29,7 @@ public class TagService {
         return repo.findById(id);
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         repo.deleteById(id);
     }
 

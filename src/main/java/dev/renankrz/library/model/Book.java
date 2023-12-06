@@ -87,12 +87,20 @@ public class Book {
         authors.add(author);
     }
 
+    public void removeAuthor(Author author) {
+        authors.remove(author);
+    }
+
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
 
     public void addTag(Tag tag) {
         tags.add(tag);
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
     }
 
 }

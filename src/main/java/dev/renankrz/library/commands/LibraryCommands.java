@@ -2,6 +2,7 @@ package dev.renankrz.library.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -123,10 +124,62 @@ class LibraryCommands {
 
     @Command(command = "rm", description = "Remove books.")
     public String remove(
-            @Option(shortNames = 'i', required = true) String id) {
-        bookService.delete(Long.parseLong(id));
+            @Option(shortNames = 'a') String authorIdInput,
+            @Option(shortNames = 'b') String bookIdInput,
+            @Option(shortNames = 't') String tagIdInput) {
 
-        return "Book removed.";
+        if (bookIdInput != null) {
+            Long bookId = Long.parseLong(bookIdInput);
+            Optional<Book> book = bookService.findById(bookId);
+
+            if (book.isEmpty()) {
+                return "No book matches the id " + bookId + ".";
+            }
+
+            bookService.deleteById(bookId);
+
+            return "The book has been removed.";
+
+        } else if (authorIdInput != null) {
+            Long authorId = Long.parseLong(authorIdInput);
+            Optional<Author> author = authorService.findById(authorId);
+
+            if (author.isPresent()) {
+                List<Book> books = bookService.findByAuthorId(authorId);
+
+                if (!books.isEmpty()) {
+                    String message = "Can\'t remove because the author is still referenced by these books:\n\n";
+                    return message + BookFormatter.formatList(books);
+                }
+
+                authorService.deleteById(authorId);
+            } else {
+                return "No author matches the id " + authorId + ".";
+            }
+
+            return "The author has been removed.";
+
+        } else if (tagIdInput != null) {
+            Long tagId = Long.parseLong(tagIdInput);
+            Optional<Tag> tag = tagService.findById(tagId);
+
+            if (tag.isPresent()) {
+                List<Book> books = bookService.findByTagId(tagId);
+
+                if (!books.isEmpty()) {
+                    String message = "Can\'t remove because the tag is still referenced by these books:\n\n";
+                    return message + BookFormatter.formatList(books);
+                }
+
+                tagService.deleteById(tagId);
+            } else {
+                return "No tag matches the id " + tagId + ".";
+            }
+
+            return "The tag has been removed.";
+        }
+
+        return "An id must be provided.";
     }
 
 }

@@ -30,12 +30,20 @@ public class BookService {
         return repo.findByNameContainsIgnoreCase(term);
     }
 
-    public List<Book> findByAuthor(String term) {
-        return repo.findByAuthor(term);
+    public List<Book> findByAuthorName(String term) {
+        return repo.findByAuthorName(term);
     }
 
-    public List<Book> findByTag(String term) {
-        return repo.findByTag(term);
+    public List<Book> findByAuthorId(Long id) {
+        return repo.findByAuthorId(id);
+    }
+
+    public List<Book> findByTagName(String term) {
+        return repo.findByTagName(term);
+    }
+
+    public List<Book> findByTagId(Long id) {
+        return repo.findByTagId(id);
     }
 
     public Optional<Book> findById(Long id) {
@@ -46,7 +54,7 @@ public class BookService {
         repo.save(b);
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         repo.deleteById(id);
     }
 
