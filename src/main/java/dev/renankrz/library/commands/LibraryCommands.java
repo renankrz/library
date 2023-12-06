@@ -24,7 +24,7 @@ import dev.renankrz.library.view.TagFormatter;
 import jakarta.transaction.Transactional;
 
 @Command(group = "Library Commands")
-class LibraryCommands {
+public class LibraryCommands {
 
     private final AuthorService authorService;
     private final BookService bookService;
