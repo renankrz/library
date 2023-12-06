@@ -18,6 +18,7 @@ import dev.renankrz.library.model.Tag;
 import dev.renankrz.library.services.AuthorService;
 import dev.renankrz.library.services.BookService;
 import dev.renankrz.library.services.TagService;
+import dev.renankrz.library.view.AuthorFormatter;
 import dev.renankrz.library.view.BookFormatter;
 import jakarta.transaction.Transactional;
 
@@ -120,6 +121,12 @@ class LibraryCommands {
         }
 
         return BookFormatter.formatList(resultsFilteredByTag);
+    }
+
+    @Command(command = "authors", description = "Show authors.")
+    public String authors() {
+        List<Author> authors = authorService.findAll();
+        return AuthorFormatter.formatList(authors);
     }
 
     @Command(command = "rm", description = "Remove books.")
