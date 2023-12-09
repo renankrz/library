@@ -45,17 +45,22 @@ public class LibraryCommands {
             @Option(shortNames = 'a') String authors,
             @Option(shortNames = 't', required = true) String tags) {
 
-        Book b = new Book(name, Integer.valueOf(year), Integer.valueOf(edition));
+        Book b = new Book(
+                name,
+                Integer.valueOf(year),
+                edition != null ? Integer.valueOf(edition) : null);
 
-        List<String> authorsNamesList = List.of(authors.split(","));
-        List<Author> authorsList = authorsNamesList.stream().map(authorName -> {
-            List<Author> existingAuthor = authorService.findByName(authorName);
-            return existingAuthor.isEmpty() ? new Author(authorName) : existingAuthor.get(0);
-        }).toList();
+        if (authors != null) {
+            List<String> authorsNamesList = List.of(authors.split(","));
+            List<Author> authorsList = authorsNamesList.stream().map(authorName -> {
+                List<Author> existingAuthor = authorService.findByName(authorName);
+                return existingAuthor.isEmpty() ? new Author(authorName) : existingAuthor.get(0);
+            }).toList();
 
-        for (Author a : authorsList) {
-            b.addAuthor(a);
-            a.addBook(b);
+            for (Author a : authorsList) {
+                b.addAuthor(a);
+                a.addBook(b);
+            }
         }
 
         List<String> tagsNamesList = List.of(tags.split(","));
