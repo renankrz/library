@@ -66,4 +66,11 @@ public class BookFormatter {
         return result;
     }
 
+    public static String generateFilename(Book b) {
+        Long id = b.getId();
+        String name = b.getName();
+
+        return name.toUpperCase().replace(" ", "-").replace(",", "") + "_" + id;
+    }
+
 }

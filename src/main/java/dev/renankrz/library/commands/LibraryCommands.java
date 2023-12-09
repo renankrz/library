@@ -76,7 +76,7 @@ public class LibraryCommands {
 
         bookService.save(b);
 
-        return "Book added.";
+        return BookFormatter.generateFilename(b);
     }
 
     @Command(command = "books", description = "Show books.")
