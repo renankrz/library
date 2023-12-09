@@ -46,12 +46,12 @@ public class LibraryCommands {
             @Option(shortNames = 't', required = true) String tags) {
 
         Book b = new Book(
-                name,
+                name.toLowerCase(),
                 Integer.valueOf(year),
                 edition != null ? Integer.valueOf(edition) : null);
 
         if (authors != null) {
-            List<String> authorsNamesList = List.of(authors.split(","));
+            List<String> authorsNamesList = List.of(authors.toLowerCase().split(","));
             List<Author> authorsList = authorsNamesList.stream().map(authorName -> {
                 List<Author> existingAuthor = authorService.findByName(authorName);
                 return existingAuthor.isEmpty() ? new Author(authorName) : existingAuthor.get(0);
@@ -63,7 +63,7 @@ public class LibraryCommands {
             }
         }
 
-        List<String> tagsNamesList = List.of(tags.split(","));
+        List<String> tagsNamesList = List.of(tags.toLowerCase().split(","));
         List<Tag> tagsList = tagsNamesList.stream().map(tagName -> {
             List<Tag> existingTag = tagService.findByName(tagName);
             return existingTag.isEmpty() ? new Tag(tagName) : existingTag.get(0);
