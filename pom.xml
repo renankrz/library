@@ -15,7 +15,7 @@
 	<description>A place in which literary, musical, artistic, or reference materials (such as books, manuscripts, recordings, or films) are kept for use but not for sale.</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-shell.version>3.2.0-RC1</spring-shell.version>
+		<spring-shell.version>3.1.6</spring-shell.version>
 	</properties>
 	<dependencies>
 		<dependency>
