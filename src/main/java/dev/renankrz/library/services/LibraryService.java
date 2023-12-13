@@ -50,8 +50,10 @@ public class LibraryService {
             List<String> authorsNamesList = List.of(authors.toLowerCase().split(","));
 
             List<Author> authorsList = authorsNamesList.stream().map(authorName -> {
-                List<Author> existingAuthor = authorRepository.findByName(authorName);
-                return existingAuthor.isEmpty() ? new Author(authorName) : existingAuthor.get(0);
+                if (authorRepository.existsByName(authorName)) {
+                    return authorRepository.findFirstByName(authorName);
+                }
+                return new Author(authorName);
             }).toList();
 
             for (Author a : authorsList) {
@@ -63,8 +65,10 @@ public class LibraryService {
         List<String> tagsNamesList = List.of(tags.toLowerCase().split(","));
 
         List<Tag> tagsList = tagsNamesList.stream().map(tagName -> {
-            List<Tag> existingTag = tagRepository.findByName(tagName);
-            return existingTag.isEmpty() ? new Tag(tagName) : existingTag.get(0);
+            if (tagRepository.existsByName(tagName)) {
+                return tagRepository.findFirstByName(tagName);
+            }
+            return new Tag(tagName);
         }).toList();
 
         for (Tag t : tagsList) {
@@ -75,6 +79,10 @@ public class LibraryService {
         bookRepository.save(b);
 
         return BookFormatter.generateFilename(b);
+    }
+
+    public String existsByName(String name) {
+        return "" + authorRepository.existsByName(name);
     }
 
     public String fixAuthorName(String strId, String newName) {

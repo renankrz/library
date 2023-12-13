@@ -12,9 +12,11 @@ import jakarta.transaction.Transactional;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
+    boolean existsByName(String name);
+
     List<Author> findAllByOrderByNameAsc();
 
-    List<Author> findByName(String name);
+    Author findFirstByName(String name);
 
     List<Author> findByNameContainsIgnoreCase(String name);
 

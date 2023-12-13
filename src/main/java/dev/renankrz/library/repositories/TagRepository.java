@@ -12,9 +12,11 @@ import jakarta.transaction.Transactional;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
+    boolean existsByName(String name);
+
     List<Tag> findAllByOrderByNameAsc();
 
-    List<Tag> findByName(String name);
+    Tag findFirstByName(String name);
 
     List<Tag> findByNameContainsIgnoreCase(String name);
 
