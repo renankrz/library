@@ -145,7 +145,27 @@ public class LibraryCommands {
                     result.getContext().get("author-id"),
                     result.getContext().get("author-new-name"));
         } else if (result.getContext().containsKey("book-id")) {
-            return "TODO: Fix book.";
+
+            if (result.getContext().containsKey("book-new-name")) {
+                return libraryService.fixBookName(
+                        result.getContext().get("book-id"),
+                        result.getContext().get("book-new-name"));
+            } else if (result.getContext().containsKey("book-new-year")) {
+                return libraryService.fixBookYear(
+                        result.getContext().get("book-id"),
+                        result.getContext().get("book-new-year"));
+            } else if (result.getContext().containsKey("book-new-edition")) {
+                return libraryService.fixBookEdition(
+                        result.getContext().get("book-id"),
+                        result.getContext().get("book-new-edition"));
+            } else if (result.getContext().containsKey("book-new-authors")) {
+                return "TODO: Fix book authors.";
+            } else if (result.getContext().containsKey("book-new-tags")) {
+                return "TODO: Fix book tags.";
+            }
+
+            return "Nothing to fix.";
+
         } else if (result.getContext().containsKey("tag-id")) {
             return libraryService.fixTagName(
                     result.getContext().get("tag-id"),

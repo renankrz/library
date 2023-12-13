@@ -90,10 +90,45 @@ public class LibraryService {
 
         if (authorRepository.existsById(id)) {
             authorRepository.updateName(id, newName);
-            return "Author updated.";
+            return "Author name updated.";
         }
 
         return "No author matches the id " + id + ".";
+    }
+
+    public String fixBookEdition(String strId, String strNewEdition) {
+        Long id = Long.parseLong(strId);
+        Integer newEdition = Integer.parseInt(strNewEdition);
+
+        if (bookRepository.existsById(id)) {
+            bookRepository.updateEdition(id, newEdition);
+            return "Book edition updated.";
+        }
+
+        return "No book matches the id " + id + ".";
+    }
+
+    public String fixBookName(String strId, String newName) {
+        Long id = Long.parseLong(strId);
+
+        if (bookRepository.existsById(id)) {
+            bookRepository.updateName(id, newName);
+            return "Book name updated.";
+        }
+
+        return "No book matches the id " + id + ".";
+    }
+
+    public String fixBookYear(String strId, String strNewYear) {
+        Long id = Long.parseLong(strId);
+        Integer newYear = Integer.parseInt(strNewYear);
+
+        if (bookRepository.existsById(id)) {
+            bookRepository.updateYear(id, newYear);
+            return "Book year updated.";
+        }
+
+        return "No book matches the id " + id + ".";
     }
 
     public String fixTagName(String strId, String newName) {
@@ -101,7 +136,7 @@ public class LibraryService {
 
         if (tagRepository.existsById(id)) {
             tagRepository.updateName(id, newName);
-            return "Tag updated.";
+            return "Tag name updated.";
         }
 
         return "No tag matches the id " + id + ".";
