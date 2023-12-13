@@ -81,10 +81,6 @@ public class LibraryService {
         return BookFormatter.generateFilename(b);
     }
 
-    public String existsByName(String name) {
-        return "" + authorRepository.existsByName(name);
-    }
-
     public String fixAuthorName(String strId, String newName) {
         Long id = Long.parseLong(strId);
 
