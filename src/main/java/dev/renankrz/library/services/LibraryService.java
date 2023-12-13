@@ -77,6 +77,28 @@ public class LibraryService {
         return BookFormatter.generateFilename(b);
     }
 
+    public String fixAuthorName(String strId, String newName) {
+        Long id = Long.parseLong(strId);
+
+        if (authorRepository.existsById(id)) {
+            authorRepository.updateName(id, newName);
+            return "Author updated.";
+        }
+
+        return "No author matches the id " + id + ".";
+    }
+
+    public String fixTagName(String strId, String newName) {
+        Long id = Long.parseLong(strId);
+
+        if (tagRepository.existsById(id)) {
+            tagRepository.updateName(id, newName);
+            return "Tag updated.";
+        }
+
+        return "No tag matches the id " + id + ".";
+    }
+
     public String getAuthors() {
         List<Author> authors = authorRepository.findAllByOrderByNameAsc();
         return AuthorFormatter.formatList(authors);
