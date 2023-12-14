@@ -1,6 +1,7 @@
 package dev.renankrz.library.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -18,6 +19,7 @@ import dev.renankrz.library.model.Tag;
 import dev.renankrz.library.repositories.AuthorRepository;
 import dev.renankrz.library.repositories.BookRepository;
 import dev.renankrz.library.repositories.TagRepository;
+import dev.renankrz.library.services.utils.StringUtils;
 import dev.renankrz.library.view.AuthorFormatter;
 import dev.renankrz.library.view.BookFormatter;
 import dev.renankrz.library.view.TagFormatter;
@@ -92,6 +94,40 @@ public class LibraryService {
         return "No author matches the id " + id + ".";
     }
 
+    @Transactional
+    public String fixBookAuthors(String strId, String strNewAuthors) {
+        Long id = Long.parseLong(strId);
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        Book book;
+
+        if (optionalBook.isPresent()) {
+            book = optionalBook.get();
+
+            for (Author author : new HashSet<>(book.getAuthors())) {
+                book.removeAuthor(author);
+                author.removeBook(book);
+            }
+
+            Set<String> authorsNames = StringUtils.tokenizeInput(strNewAuthors);
+
+            Set<Author> authors = authorsNames.stream().map(authorName -> {
+                if (authorRepository.existsByName(authorName)) {
+                    return authorRepository.findFirstByName(authorName);
+                }
+                return new Author(authorName);
+            }).collect(Collectors.toSet());
+
+            for (Author a : authors) {
+                book.addAuthor(a);
+                a.addBook(book);
+            }
+
+            return "Book authors updated.";
+        }
+
+        return "No book matches the id " + id + ".";
+    }
+
     public String fixBookEdition(String strId, String strNewEdition) {
         Long id = Long.parseLong(strId);
         Integer newEdition = Integer.parseInt(strNewEdition);
@@ -110,6 +146,40 @@ public class LibraryService {
         if (bookRepository.existsById(id)) {
             bookRepository.updateName(id, newName);
             return "Book name updated.";
+        }
+
+        return "No book matches the id " + id + ".";
+    }
+
+    @Transactional
+    public String fixBookTags(String strId, String strNewTags) {
+        Long id = Long.parseLong(strId);
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        Book book;
+
+        if (optionalBook.isPresent()) {
+            book = optionalBook.get();
+
+            for (Tag tag : new HashSet<>(book.getTags())) {
+                book.removeTag(tag);
+                tag.removeBook(book);
+            }
+
+            Set<String> tagsNames = StringUtils.tokenizeInput(strNewTags);
+
+            Set<Tag> tags = tagsNames.stream().map(tagName -> {
+                if (tagRepository.existsByName(tagName)) {
+                    return tagRepository.findFirstByName(tagName);
+                }
+                return new Tag(tagName);
+            }).collect(Collectors.toSet());
+
+            for (Tag t : tags) {
+                book.addTag(t);
+                t.addBook(book);
+            }
+
+            return "Book tags updated.";
         }
 
         return "No book matches the id " + id + ".";

@@ -159,9 +159,13 @@ public class LibraryCommands {
                         result.getContext().get("book-id"),
                         result.getContext().get("book-new-edition"));
             } else if (result.getContext().containsKey("book-new-authors")) {
-                return "TODO: Fix book authors.";
+                return libraryService.fixBookAuthors(
+                        result.getContext().get("book-id"),
+                        result.getContext().get("book-new-authors"));
             } else if (result.getContext().containsKey("book-new-tags")) {
-                return "TODO: Fix book tags.";
+                return libraryService.fixBookTags(
+                        result.getContext().get("book-id"),
+                        result.getContext().get("book-new-tags"));
             }
 
             return "Nothing to fix.";
