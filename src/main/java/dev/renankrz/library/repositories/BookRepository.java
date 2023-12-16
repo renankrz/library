@@ -17,14 +17,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT DISTINCT b FROM Book b JOIN FETCH b.authors a JOIN FETCH b.authors WHERE a.id = :id")
     List<Book> findByAuthorId(@Param("id") Long id);
 
-    @Query("SELECT DISTINCT b FROM Book b JOIN FETCH b.authors a JOIN FETCH b.authors WHERE a.name LIKE %:term%")
-    List<Book> findByAuthorName(@Param("term") String term);
-
     @Query("SELECT DISTINCT b FROM Book b JOIN FETCH b.tags t JOIN FETCH b.tags WHERE t.id = :id")
     List<Book> findByTagId(@Param("id") Long id);
-
-    @Query("SELECT DISTINCT b FROM Book b JOIN FETCH b.tags t JOIN FETCH b.tags WHERE t.name LIKE %:term%")
-    List<Book> findByTagName(@Param("term") String term);
 
     @Modifying
     @Transactional
