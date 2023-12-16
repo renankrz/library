@@ -1,7 +1,9 @@
 package dev.renankrz.library.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dev.renankrz.library.Constants;
@@ -79,8 +81,10 @@ public class Book {
         this.edition = edition;
     }
 
-    public Set<Author> getAuthors() {
-        return Collections.unmodifiableSet(authors);
+    public List<Author> getAuthors() {
+        List<Author> authorsList = new ArrayList<>(authors);
+        Collections.sort(authorsList);
+        return authorsList;
     }
 
     public void addAuthor(Author author) {
@@ -91,8 +95,10 @@ public class Book {
         authors.remove(author);
     }
 
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public List<Tag> getTags() {
+        List<Tag> tagsList = new ArrayList<>(tags);
+        Collections.sort(tagsList);
+        return tagsList;
     }
 
     public void addTag(Tag tag) {

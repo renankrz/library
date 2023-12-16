@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-public class Tag {
+public class Tag implements Comparable<Tag> {
 
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
@@ -55,6 +55,11 @@ public class Tag {
 
     public void removeBook(Book book) {
         books.remove(book);
+    }
+
+    @Override
+    public int compareTo(Tag t) {
+        return this.getName().compareTo(t.getName());
     }
 
 }
