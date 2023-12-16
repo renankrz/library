@@ -237,8 +237,9 @@ public class LibraryService {
             Set<String> inputAuthorsNames = List.of(authors.split(",")).stream().collect(Collectors.toSet());
 
             for (Book r : results) {
-                if (!r.getAuthors().stream().map(a -> a.getName()).collect(Collectors.toSet())
-                        .containsAll(inputAuthorsNames)) {
+                Set<String> authorsNames = r.getAuthors().stream().map(a -> a.getName()).collect(Collectors.toSet());
+
+                if (!StringUtils.containsAllStrings(authorsNames, inputAuthorsNames)) {
                     resultsFilteredByAuthor.remove(r);
                 }
             }
@@ -250,8 +251,9 @@ public class LibraryService {
             Set<String> inputTagsNames = List.of(tags.split(",")).stream().collect(Collectors.toSet());
 
             for (Book r : resultsFilteredByAuthor) {
-                if (!r.getTags().stream().map(t -> t.getName()).collect(Collectors.toSet())
-                        .containsAll(inputTagsNames)) {
+                Set<String> tagsNames = r.getTags().stream().map(t -> t.getName()).collect(Collectors.toSet());
+
+                if (!StringUtils.containsAllStrings(tagsNames, inputTagsNames)) {
                     resultsFilteredByTag.remove(r);
                 }
             }

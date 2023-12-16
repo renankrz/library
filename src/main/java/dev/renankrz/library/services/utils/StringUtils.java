@@ -5,6 +5,15 @@ import java.util.Set;
 
 public class StringUtils {
 
+    public static boolean containsAllStrings(Set<String> completeStrings, Set<String> partialStrings) {
+        for (String partial : partialStrings) {
+            if (completeStrings.stream().noneMatch(complete -> complete.contains(partial))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static Set<String> tokenizeInput(String input) {
 
         String[] pieces = input.toLowerCase().split(" ");
