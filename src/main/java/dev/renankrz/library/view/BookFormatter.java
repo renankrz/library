@@ -8,11 +8,25 @@ import dev.renankrz.library.model.Tag;
 
 public class BookFormatter {
 
+    private static final int MAX_LEN_NAME = 40;
+    private static final int MAX_LEN_AUTHORS = 30;
+    private static final int MAX_LEN_TAGS = 60;
+
+    private static String truncate(String text, int maxLen) {
+        if (text.length() <= maxLen) {
+            return text;
+        } else {
+            int lastRemainingSpace = text.substring(0, maxLen - 4).lastIndexOf(" ");
+
+            return text.substring(0, lastRemainingSpace + 2) + "...";
+        }
+    }
+
     public static String formatList(List<Book> books) {
         int maxLenId = "Id".length();
         int maxLenName = "Name".length();
         int maxLenYear = "Year".length();
-        int maxLenEdition = "Edition".length();
+        int maxLenEdition = "Ed.".length();
         int maxLenAuthors = "Authors".length();
         int maxLenTags = "Tags".length();
 
@@ -37,10 +51,14 @@ public class BookFormatter {
                             .sum() - 2);
         }
 
+        maxLenName = Math.min(maxLenName, MAX_LEN_NAME);
+        maxLenAuthors = Math.min(maxLenAuthors, MAX_LEN_AUTHORS);
+        maxLenTags = Math.min(maxLenTags, MAX_LEN_TAGS);
+
         String result = String.format("%1$-" + maxLenId + "s", "Id") + " | " +
                 String.format("%1$-" + maxLenName + "s", "Name") + " | " +
                 String.format("%1$-" + maxLenYear + "s", "Year") + " | " +
-                String.format("%1$-" + maxLenEdition + "s", "Edition") + " | " +
+                String.format("%1$-" + maxLenEdition + "s", "Ed.") + " | " +
                 String.format("%1$-" + maxLenAuthors + "s", "Authors") + " | " +
                 String.format("%1$-" + maxLenTags + "s", "Tags") + "\n" +
                 "-".repeat(maxLenId + 1) + "+" +
@@ -52,14 +70,20 @@ public class BookFormatter {
 
         for (Book b : books) {
             result += String.format("%1$-" + maxLenId + "s", b.getId()) + " | " +
-                    String.format("%1$-" + maxLenName + "s", b.getName()) + " | " +
+                    String.format("%1$-" + maxLenName + "s",
+                            truncate(b.getName(), MAX_LEN_NAME))
+                    + " | " +
                     String.format("%1$-" + maxLenYear + "s", b.getYear()) + " | " +
                     String.format("%1$-" + maxLenEdition + "s", b.getEdition()) + " | " +
                     String.format("%1$-" + maxLenAuthors + "s",
-                            String.join(", ", b.getAuthors().stream().map(a -> a.getLastName()).toList()))
+                            truncate(
+                                    String.join(", ", b.getAuthors().stream().map(a -> a.getLastName()).toList()),
+                                    MAX_LEN_AUTHORS))
                     + " | " +
                     String.format("%1$-" + maxLenTags + "s",
-                            String.join(", ", b.getTags().stream().map(t -> t.getName()).toList()))
+                            truncate(
+                                    String.join(", ", b.getTags().stream().map(t -> t.getName()).toList()),
+                                    MAX_LEN_TAGS))
                     + "\n";
         }
 
