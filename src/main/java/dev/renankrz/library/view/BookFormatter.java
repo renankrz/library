@@ -9,7 +9,7 @@ import dev.renankrz.library.model.Tag;
 public class BookFormatter {
 
     private static final int MAX_LEN_NAME = 40;
-    private static final int MAX_LEN_AUTHORS = 30;
+    private static final int MAX_LEN_AUTHORS = 20;
     private static final int MAX_LEN_TAGS = 60;
 
     private static String truncate(String text, int maxLen) {
@@ -20,6 +20,37 @@ public class BookFormatter {
 
             return text.substring(0, lastRemainingSpace + 2) + "...";
         }
+    }
+
+    public static String formatOne(Book book) {
+
+        StringBuilder buff = new StringBuilder();
+
+        buff.append("Id: ");
+        buff.append(book.getId());
+        buff.append("\n");
+
+        buff.append("Name: ");
+        buff.append(book.getName());
+        buff.append("\n");
+
+        buff.append("Year: ");
+        buff.append(book.getYear());
+        buff.append("\n");
+
+        buff.append("Edition: ");
+        buff.append(book.getEdition());
+        buff.append("\n");
+
+        buff.append("Authors: ");
+        buff.append(String.join(", ", book.getAuthors().stream().map(a -> a.getName()).toList()));
+        buff.append("\n");
+
+        buff.append("Tags: ");
+        buff.append(String.join(", ", book.getTags().stream().map(t -> t.getName()).toList()));
+        buff.append("\n");
+
+        return buff.toString();
     }
 
     public static String formatList(List<Book> books) {
