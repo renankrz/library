@@ -213,7 +213,18 @@ public class LibraryService {
         return AuthorFormatter.formatList(authors);
     }
 
-    public String getBooks(String name, String year, String edition, String authors, String tags) {
+    public String getBooks(String id, String name, String year, String edition, String authors, String tags) {
+
+        if (id != null) {
+            Optional<Book> optionalBook = bookRepository.findById(Long.parseLong(id));
+
+            if (optionalBook.isEmpty()) {
+                return "No book matches the id " + id + ".";
+            }
+
+            return BookFormatter.formatOne(optionalBook.get());
+        }
+
         Book probe = new Book(
                 name,
                 year != null ? Integer.parseInt(year) : null,

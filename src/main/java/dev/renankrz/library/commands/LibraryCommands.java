@@ -34,13 +34,14 @@ public class LibraryCommands {
 
     @Command(command = "books", description = "List books.")
     public String books(
+            @Option(shortNames = 'i') String id,
             @Option(shortNames = 'n') String name,
             @Option(shortNames = 'y') String year,
             @Option(shortNames = 'e') String edition,
             @Option(shortNames = 'a') String authors,
             @Option(shortNames = 't') String tags) {
 
-        return libraryService.getBooks(name, year, edition, authors, tags);
+        return libraryService.getBooks(id, name, year, edition, authors, tags);
     }
 
     @Command(command = "authors", description = "List authors.")
