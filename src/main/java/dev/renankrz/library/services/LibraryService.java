@@ -130,14 +130,25 @@ public class LibraryService {
 
     public String fixBookEdition(String strId, String strNewEdition) {
         Long id = Long.parseLong(strId);
-        Integer newEdition = Integer.parseInt(strNewEdition);
 
-        if (bookRepository.existsById(id)) {
-            bookRepository.updateEdition(id, newEdition);
-            return "Book edition updated.";
+        if (!bookRepository.existsById(id)) {
+            return "No book matches the id " + id + ".";
         }
 
-        return "No book matches the id " + id + ".";
+        /*
+         * TO-DO:
+         * Accept null when they fix ComponentContext#get.
+         * For now, accepting 0 for null is just a workaround.
+         */
+        Integer newEdition = Integer.parseInt(strNewEdition);
+
+        if (newEdition == 0) {
+            bookRepository.updateEdition(id, null);
+        } else {
+            bookRepository.updateEdition(id, newEdition);
+        }
+
+        return "Book edition updated.";
     }
 
     public String fixBookName(String strId, String newName) {
