@@ -18,10 +18,10 @@ import dev.renankrz.library.model.Tag;
 import dev.renankrz.library.repositories.AuthorRepository;
 import dev.renankrz.library.repositories.BookRepository;
 import dev.renankrz.library.repositories.TagRepository;
+import dev.renankrz.library.services.utils.AuthorFormatter;
+import dev.renankrz.library.services.utils.BookFormatter;
 import dev.renankrz.library.services.utils.StringUtils;
-import dev.renankrz.library.view.AuthorFormatter;
-import dev.renankrz.library.view.BookFormatter;
-import dev.renankrz.library.view.TagFormatter;
+import dev.renankrz.library.services.utils.TagFormatter;
 import jakarta.transaction.Transactional;
 
 @Service

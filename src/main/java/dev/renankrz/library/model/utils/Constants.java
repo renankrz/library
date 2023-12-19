@@ -1,4 +1,4 @@
-package dev.renankrz.library;
+package dev.renankrz.library.model.utils;
 
 public class Constants {
 

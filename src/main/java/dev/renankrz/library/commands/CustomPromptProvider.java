@@ -1,4 +1,4 @@
-package dev.renankrz.library;
+package dev.renankrz.library.commands;
 
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
