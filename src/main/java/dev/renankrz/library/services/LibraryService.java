@@ -3,7 +3,6 @@ package dev.renankrz.library.services;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,6 +42,7 @@ public class LibraryService {
 
     @Transactional
     public String addBook(String name, String year, String edition, String authors, String tags) {
+
         Book b = new Book(
                 name.toLowerCase(),
                 Integer.valueOf(year),
@@ -81,54 +81,59 @@ public class LibraryService {
         bookRepository.save(b);
 
         return BookFormatter.generateFilename(b);
+
     }
 
     public String fixAuthorName(String strId, String newName) {
+
         Long id = Long.parseLong(strId);
 
-        if (authorRepository.existsById(id)) {
-            authorRepository.updateName(id, newName);
-            return "Author name updated.";
+        if (!authorRepository.existsById(id)) {
+            return "No author matches the id " + id + ".";
         }
 
-        return "No author matches the id " + id + ".";
+        authorRepository.updateName(id, newName);
+
+        return "Author name updated.";
+
     }
 
     @Transactional
     public String fixBookAuthors(String strId, String strNewAuthors) {
+
         Long id = Long.parseLong(strId);
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        Book book;
 
-        if (optionalBook.isPresent()) {
-            book = optionalBook.get();
-
-            for (Author author : new HashSet<>(book.getAuthors())) {
-                book.removeAuthor(author);
-                author.removeBook(book);
-            }
-
-            Set<String> authorsNames = StringUtils.tokenizeInput(strNewAuthors);
-
-            Set<Author> authors = authorsNames.stream().map(authorName -> {
-                if (authorRepository.existsByName(authorName)) {
-                    return authorRepository.findFirstByName(authorName);
-                }
-                return new Author(authorName);
-            }).collect(Collectors.toSet());
-
-            for (Author a : authors) {
-                book.addAuthor(a);
-                a.addBook(book);
-            }
-
-            return "Book authors updated.";
+        if (!bookRepository.existsById(id)) {
+            return "No book matches the id " + id + ".";
         }
 
-        return "No book matches the id " + id + ".";
+        Book book = bookRepository.findFirstById(id);
+
+        for (Author author : new HashSet<>(book.getAuthors())) {
+            book.removeAuthor(author);
+            author.removeBook(book);
+        }
+
+        Set<String> authorsNames = StringUtils.tokenizeInput(strNewAuthors);
+
+        Set<Author> authors = authorsNames.stream().map(authorName -> {
+            if (authorRepository.existsByName(authorName)) {
+                return authorRepository.findFirstByName(authorName);
+            }
+            return new Author(authorName);
+        }).collect(Collectors.toSet());
+
+        for (Author a : authors) {
+            book.addAuthor(a);
+            a.addBook(book);
+        }
+
+        return "Book authors updated.";
+
     }
 
     public String fixBookEdition(String strId, String strNewEdition) {
+
         Long id = Long.parseLong(strId);
 
         if (!bookRepository.existsById(id)) {
@@ -149,91 +154,106 @@ public class LibraryService {
         }
 
         return "Book edition updated.";
+
     }
 
     public String fixBookName(String strId, String newName) {
+
         Long id = Long.parseLong(strId);
 
-        if (bookRepository.existsById(id)) {
-            bookRepository.updateName(id, newName);
-            return "Book name updated.";
+        if (!bookRepository.existsById(id)) {
+            return "No book matches the id " + id + ".";
         }
 
-        return "No book matches the id " + id + ".";
+        bookRepository.updateName(id, newName);
+
+        return "Book name updated.";
+
     }
 
     @Transactional
     public String fixBookTags(String strId, String strNewTags) {
+
         Long id = Long.parseLong(strId);
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        Book book;
 
-        if (optionalBook.isPresent()) {
-            book = optionalBook.get();
-
-            for (Tag tag : new HashSet<>(book.getTags())) {
-                book.removeTag(tag);
-                tag.removeBook(book);
-            }
-
-            Set<String> tagsNames = StringUtils.tokenizeInput(strNewTags);
-
-            Set<Tag> tags = tagsNames.stream().map(tagName -> {
-                if (tagRepository.existsByName(tagName)) {
-                    return tagRepository.findFirstByName(tagName);
-                }
-                return new Tag(tagName);
-            }).collect(Collectors.toSet());
-
-            for (Tag t : tags) {
-                book.addTag(t);
-                t.addBook(book);
-            }
-
-            return "Book tags updated.";
+        if (!bookRepository.existsById(id)) {
+            return "No book matches the id " + id + ".";
         }
 
-        return "No book matches the id " + id + ".";
+        Book book = bookRepository.findFirstById(id);
+
+        for (Tag tag : new HashSet<>(book.getTags())) {
+            book.removeTag(tag);
+            tag.removeBook(book);
+        }
+
+        Set<String> tagsNames = StringUtils.tokenizeInput(strNewTags);
+
+        Set<Tag> tags = tagsNames.stream().map(tagName -> {
+            if (tagRepository.existsByName(tagName)) {
+                return tagRepository.findFirstByName(tagName);
+            }
+            return new Tag(tagName);
+        }).collect(Collectors.toSet());
+
+        for (Tag t : tags) {
+            book.addTag(t);
+            t.addBook(book);
+        }
+
+        return "Book tags updated.";
+
     }
 
     public String fixBookYear(String strId, String strNewYear) {
-        Long id = Long.parseLong(strId);
-        Integer newYear = Integer.parseInt(strNewYear);
 
-        if (bookRepository.existsById(id)) {
-            bookRepository.updateYear(id, newYear);
-            return "Book year updated.";
+        Long id = Long.parseLong(strId);
+
+        if (!bookRepository.existsById(id)) {
+            return "No book matches the id " + id + ".";
         }
 
-        return "No book matches the id " + id + ".";
+        Integer newYear = Integer.parseInt(strNewYear);
+        bookRepository.updateYear(id, newYear);
+
+        return "Book year updated.";
+
     }
 
     public String fixTagName(String strId, String newName) {
+
         Long id = Long.parseLong(strId);
 
-        if (tagRepository.existsById(id)) {
-            tagRepository.updateName(id, newName);
-            return "Tag name updated.";
+        if (!tagRepository.existsById(id)) {
+            return "No tag matches the id " + id + ".";
         }
 
-        return "No tag matches the id " + id + ".";
+        tagRepository.updateName(id, newName);
+
+        return "Tag name updated.";
+
     }
 
     public String getAuthors() {
+
         List<Author> authors = authorRepository.findAllByOrderByNameAsc();
+
         return AuthorFormatter.formatList(authors);
+
     }
 
-    public String getBooks(String id, String name, String year, String edition, String authors, String tags) {
+    public String getBooks(String strId, String name, String year, String edition, String authors, String tags) {
 
-        if (id != null) {
-            Optional<Book> optionalBook = bookRepository.findById(Long.parseLong(id));
+        if (strId != null) {
+            Long id = Long.parseLong(strId);
 
-            if (optionalBook.isEmpty()) {
+            if (!bookRepository.existsById(id)) {
                 return "No book matches the id " + id + ".";
             }
 
-            return BookFormatter.formatOne(optionalBook.get());
+            Book book = bookRepository.findFirstById(id);
+
+            return BookFormatter.formatOne(book);
         }
 
         Book probe = new Book(
@@ -282,17 +302,22 @@ public class LibraryService {
         }
 
         return BookFormatter.formatList(resultsFilteredByTag);
+
     }
 
     public String getTags() {
+
         List<Tag> tags = tagRepository.findAllByOrderByNameAsc();
+
         return TagFormatter.formatList(tags);
+
     }
 
-    public String removeAuthor(Long id) {
-        Optional<Author> author = authorRepository.findById(id);
+    public String removeAuthor(String strId) {
 
-        if (author.isEmpty()) {
+        Long id = Long.parseLong(strId);
+
+        if (!authorRepository.existsById(id)) {
             return "No author matches the id " + id + ".";
         }
 
@@ -307,24 +332,28 @@ public class LibraryService {
         authorRepository.deleteById(id);
 
         return "The author has been removed.";
+
     }
 
-    public String removeBook(Long id) {
-        Optional<Book> book = bookRepository.findById(id);
+    public String removeBook(String strId) {
 
-        if (book.isEmpty()) {
+        Long id = Long.parseLong(strId);
+
+        if (!bookRepository.existsById(id)) {
             return "No book matches the id " + id + ".";
         }
 
         bookRepository.deleteById(id);
 
         return "The book has been removed.";
+
     }
 
-    public String removeTag(Long id) {
-        Optional<Tag> tag = tagRepository.findById(id);
+    public String removeTag(String strId) {
 
-        if (tag.isEmpty()) {
+        Long id = Long.parseLong(strId);
+
+        if (!tagRepository.existsById(id)) {
             return "No tag matches the id " + id + ".";
         }
 
@@ -339,6 +368,7 @@ public class LibraryService {
         tagRepository.deleteById(id);
 
         return "The tag has been removed.";
+
     }
 
 }

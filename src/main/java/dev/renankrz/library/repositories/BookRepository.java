@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+    Book findFirstById(Long id);
+
     List<Book> findByNameContainsIgnoreCase(String term);
 
     @Query("SELECT DISTINCT b FROM Book b JOIN FETCH b.authors a JOIN FETCH b.authors WHERE a.id = :id")

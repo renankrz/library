@@ -61,11 +61,11 @@ public class LibraryCommands {
             @Option(shortNames = 't') String tagId) {
 
         if (authorId != null) {
-            return libraryService.removeAuthor(Long.parseLong(authorId));
+            return libraryService.removeAuthor(authorId);
         } else if (bookId != null) {
-            return libraryService.removeBook(Long.parseLong(bookId));
+            return libraryService.removeBook(bookId);
         } else if (tagId != null) {
-            return libraryService.removeTag(Long.parseLong(tagId));
+            return libraryService.removeTag(tagId);
         }
 
         return "An id must be provided.";
