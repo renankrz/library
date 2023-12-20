@@ -234,9 +234,15 @@ public class LibraryService {
 
     }
 
-    public String getAuthors() {
+    public String getAuthors(String name) {
 
-        List<Author> authors = authorRepository.findAllByOrderByNameAsc();
+        List<Author> authors;
+
+        if (name != null) {
+            authors = authorRepository.findByNameContainsIgnoreCase(name);
+        } else {
+            authors = authorRepository.findAllByOrderByNameAsc();
+        }
 
         return AuthorFormatter.formatList(authors);
 
@@ -305,9 +311,15 @@ public class LibraryService {
 
     }
 
-    public String getTags() {
+    public String getTags(String name) {
 
-        List<Tag> tags = tagRepository.findAllByOrderByNameAsc();
+        List<Tag> tags;
+
+        if (name != null) {
+            tags = tagRepository.findByNameContainsIgnoreCase(name);
+        } else {
+            tags = tagRepository.findAllByOrderByNameAsc();
+        }
 
         return TagFormatter.formatList(tags);
 

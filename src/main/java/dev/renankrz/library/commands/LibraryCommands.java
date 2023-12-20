@@ -45,13 +45,15 @@ public class LibraryCommands {
     }
 
     @Command(command = "authors", description = "List authors.")
-    public String authors() {
-        return libraryService.getAuthors();
+    public String authors(
+            @Option(shortNames = 'n') String name) {
+        return libraryService.getAuthors(name);
     }
 
     @Command(command = "tags", description = "List tags.")
-    public String tags() {
-        return libraryService.getTags();
+    public String tags(
+            @Option(shortNames = 'n') String name) {
+        return libraryService.getTags(name);
     }
 
     @Command(command = "rm", description = "Remove stuff.")
