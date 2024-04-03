@@ -9,6 +9,7 @@ target/
 ### DB ###
 /config/*
 !/config/*.example
+dump/
 
 ### STS ###
 .apt_generated
