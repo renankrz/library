@@ -1,12 +1,12 @@
 *.log
 HELP.md
+local/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### DB ###
-
 /config/*
 !/config/*.example
 
